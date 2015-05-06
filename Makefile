@@ -1,15 +1,16 @@
 #modifiable vars
-CFLAGS = --std=c++11 -W -Wall -Wextra
-SRCEXT = cpp
+CC = gcc
+CFLAGS = --std=gnu99 -W -Wall -Wextra -D_REENTRANT
+SRCEXT = c
 SRCD = src
 OBJD = obj
 BIND = bin
 EXENAME = test
-SHELL = /bin/bash
+SHELL = /bin/sh
 
 #be careful modifying anything past this point !
 SRC = $(wildcard $(SRCD)/*.$(SRCEXT))
-OBJ = $(SRC:$(SRCD)/%.cpp=$(OBJD)/%.o)
+OBJ = $(SRC:$(SRCD)/%.$(SRCEXT)=$(OBJD)/%.o)
 BIN = $(BIND)/$(EXENAME)
 
 CC_RED = \e[31m
@@ -31,12 +32,12 @@ ifneq ($(wildcard $(SRCD) $(OBJD) $(BIND)), $(SRCD) $(OBJD) $(BIND))
 	@echo -e "Directory not tied up ! Try to run $(call WARN,"make organize") to solve your problems."
 else
 	@echo -e "Building $(call EMPH,$(BIND)/$(EXENAME)) from $(call EMPH,"$^")"
-	@g++ $(CFLAGS) -o $(BIN) $^
+	@$(CC) $(CFLAGS) -o $(BIN) $^
 endif
 
 $(OBJD)/%.o : $(SRCD)/%.$(SRCEXT)
 	@echo -e "Building $(call EMPH,$@)"
-	@g++ $(CFLAGS) -c -o $@ $^
+	@$(CC) $(CFLAGS) -c -o $@ $^
 
 organize: clean
 ifneq ($(wildcard $(SRCD) $(OBJD) $(BIND)), $(SRCD) $(OBJD) $(BIND))
@@ -78,7 +79,7 @@ debug:
 
 edit: 
 	-@for file in $(SRC); do \
-		($$EDITOR $$file $${file%cpp}hpp &);  \
+		($$EDITOR $$file $${file%cpp}hpp &);  \ #TODO
 	done
 
 background:
