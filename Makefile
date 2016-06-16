@@ -1,7 +1,16 @@
 #modifiable vars
-CC = gcc
-CFLAGS = --std=gnu99 -W -Wall -Wextra -D_REENTRANT
-SRCEXT = c
+CC = g++
+ifeq ($(CC),gcc)
+	CFLAGS = --std=gnu99 -W -Wall -Wextra -D_REENTRANT
+	SRCEXT = c
+else ifeq ($(CC),g++)
+	CFLAGS = --std=c++11 -W -Wall -Wextra
+	SRCEXT = cpp
+else
+failure:
+	@echo "CC not supported. aborting..."
+endif
+
 SRCD = src
 OBJD = obj
 BIND = bin
@@ -73,7 +82,7 @@ cleanbuild: clean default
 
 debugbuild: cleanbuild debug
 
-debug: 
+debug:
 	@echo -e "\n\n-------------------------------------------------------------------------\n\n"
 	./$(BIN)
 
