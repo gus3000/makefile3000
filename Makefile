@@ -15,7 +15,7 @@ SRCD = src
 OBJD = obj
 BIND = bin
 EXENAME = test
-SHELL = /bin/sh
+SHELL = /bin/bash
 
 #be careful modifying anything past this point !
 SRC = $(wildcard $(SRCD)/*.$(SRCEXT))
